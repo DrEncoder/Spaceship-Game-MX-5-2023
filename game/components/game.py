@@ -36,9 +36,9 @@ class Game:
             if event.type == pygame.QUIT:
                 self.playing = False
 
-    def update(self):
+    def update(self, object):
         user_input = pygame.key.get_pressed()
-        self.player.update(user_input)
+        self.player.update(user_input, object)
         self.enemy_handler.update(self.bullet_handler)
         self.bullet_handler.update(self.player)
         if not self.player.is_alive:
