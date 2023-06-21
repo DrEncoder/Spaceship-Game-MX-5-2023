@@ -39,3 +39,4 @@ DOWN = 'down'
 
 BLACK_COLOR = (0, 0, 0)
 WHITE_COLOR = (255, 255, 255)
+RED_COLOR = (239, 9, 9)

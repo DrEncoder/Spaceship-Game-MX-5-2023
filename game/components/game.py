@@ -1,6 +1,6 @@
 import pygame
 
-from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, WHITE_COLOR
+from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, WHITE_COLOR, RED_COLOR
 from game.components.spaceship import Spaceship
 from game.components.enemies.enemy_handler import EnemyHandler
 from game.components.bullets.bullet_handler import BulletHandler
@@ -24,6 +24,9 @@ class Game:
         self.bullet_handler = BulletHandler()
         self.number_death = 0
         self.score = 0
+        self.game_over = False
+        self.menu_selection = 0
+        
 
     def run(self):
         # Game loop: events - update - draw
@@ -41,8 +44,26 @@ class Game:
                 self.running = False
                 self.playing = False
             elif event.type == pygame.KEYDOWN and not self.playing:
-                self.playing = True
-                self.reset()
+                if self.playing:
+                    if event.key == pygame.K_ESCAPE:
+                        self.playing = False
+                else:
+                    if event.key == pygame.K_UP:
+                        self.menu_selection -= 1
+                        if self.menu_selection < 0:
+                            self.menu_selection = 2
+                    elif event.key == pygame.K_DOWN:
+                        self.menu_selection += 1
+                        if self.menu_selection > 2:
+                            self.menu_selection = 0
+                    elif event.key == pygame.K_RETURN:
+                        if self.menu_selection == 0:
+                            self.playing = True
+                            self.reset()
+                        elif self.menu_selection == 1:
+                            self.show_high_scores()
+                        elif self.menu_selection == 2:
+                            self.running = False
 
     def update(self):
         if self.playing:
@@ -55,6 +76,8 @@ class Game:
                 pygame.time.delay(500)
                 self.playing = False
                 self.number_death += 1
+                self.game_over = True
+                self.score = self.enemy_handler.number_enemies_destroyed
 
 
     def draw(self):
@@ -81,15 +104,19 @@ class Game:
         self.y_pos_bg += self.game_speed
 
     def draw_menu(self):
-        if self.number_death == 0:
-           text, text_rect = text_utils.get_message('Press any key to Start', 30, WHITE_COLOR)
-           self.screen.blit(text, text_rect)
-        else:
-            text, text_rect = text_utils.get_message('Press any key to restart', 30, WHITE_COLOR)
-            score, score_rect = text_utils.get_message(f'Your score is: {self.score}', 30, WHITE_COLOR, height=SCREEN_HEIGHT//2 + 50)
-            self.screen.blit(text, text_rect)
-            self.screen.blit(score, score_rect)
+        menu_options = ['Start Game', 'High Scores', 'Exit']
+        menu_color = [WHITE_COLOR] * 3
+        menu_color[self.menu_selection] = RED_COLOR
 
+        for index, option in enumerate(menu_options):
+            text, text_rect = text_utils.get_message(option, 30, menu_color[index], height=SCREEN_HEIGHT // 2 - 100 + index * 40)
+            self.screen.blit(text, text_rect)
+
+        if self.game_over:
+            score_text, score_rect = text_utils.get_message(f'Your score was: {self.score}', 20, WHITE_COLOR, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 150)
+            self.screen.blit(score_text, score_rect)
+
+           
     def draw_score(self):
         score, score_rect = text_utils.get_message(f'Your score is: {self.score}', 20, WHITE_COLOR, 1000, 40)
         self.screen.blit(score, score_rect)
