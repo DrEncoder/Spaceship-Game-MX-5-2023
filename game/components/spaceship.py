@@ -38,22 +38,28 @@ class Spaceship:
 
      def move_left(self):
         if self.rect.left > 0:
-              self.rect.x -= 10
+              self.rect.x -= 15
      
      def move_right(self):
         if self.rect.right < SCREEN_WIDTH:
-            self.rect.x += 10  
+            self.rect.x += 15  
 
      def move_up(self):
          if self.rect.top > (SCREEN_HEIGHT // 2):
-            self.rect.y -= 10      
+            self.rect.y -= 15      
 
      def move_down(self):
          if self.rect.bottom < SCREEN_HEIGHT:
-            self.rect.y += 10    
+            self.rect.y += 15 
+
 
      def shoot(self, bullet_handler):
          bullet_handler.add_bullet(BULLET_PLAYER_TYPE, self.rect.center)
+
+     def reset(self):
+         self.rect.x = self.X_POS
+         self.rect.y = self.Y_POS
+         self.is_alive = True
       
 
      

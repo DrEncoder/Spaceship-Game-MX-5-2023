@@ -36,3 +36,6 @@ BULLET_PLAYER_TYPE = 'player'
 LEFT = 'left'
 RIGHT = 'right'
 DOWN = 'down'
+
+BLACK_COLOR = (0, 0, 0)
+WHITE_COLOR = (255, 255, 255)

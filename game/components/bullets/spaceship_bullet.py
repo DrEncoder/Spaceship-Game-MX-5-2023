@@ -6,7 +6,7 @@ from game.utils.constants import BULLET
 class SpaceshipBullet(Bullet):
     WIDTH = 9
     HEIGHT = 32
-    SPEED = 20
+    SPEED = 5
 
 
     def __init__(self, center):
@@ -16,4 +16,6 @@ class SpaceshipBullet(Bullet):
 
     def update(self, enemy):
         self.rect.y -= self.SPEED
-        super().update(enemy) 
+        super().update(enemy)
+        if not enemy.is_alive:
+            enemy.is_destroyed = True

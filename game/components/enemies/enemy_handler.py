@@ -1,15 +1,18 @@
 from game.components.enemies.ship import Ship
-from game.components.enemies.enemy2 import EnemyTwo
-from game.components.enemies.enemy3 import EnemyThree
+from game.components.enemies.diagonal_enemy_right import EnemyThree
+from game.components.enemies.diagonal_enemyl_left import EnemyTwo
 
 class EnemyHandler():
     def __init__(self):  
         self.enemies = []
+        self.number_enemies_destroyed = 0
 
     def update(self, bullet_handler):
         self.add_enemy()
         for enemy in self.enemies:
             enemy.update(bullet_handler)
+            if enemy.is_destroyed:
+                self.number_enemies_destroyed += 1
             if not enemy.is_alive:
                 self.remove_enemy(enemy)
 
@@ -25,3 +28,7 @@ class EnemyHandler():
 
     def remove_enemy(self, enemy):
         self.enemies.remove(enemy)
+
+    def reset(self):
+        self.enemies = []
+        self.number_enemies_destroyed = 0
