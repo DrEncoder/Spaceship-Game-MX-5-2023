@@ -1,19 +1,19 @@
-from game.utils.constants import SCREEN_HEIGHT
+import pygame
+from game.components.bullets.bullet import Bullet
+from game.utils.constants import BULLET
 
 
-class SpaceshipBullet:
-    def __init__(self, image, center):
-        self.image = image
-        self.rect = self.image.get_rect()
-        self.rect.center = center
-        self.is_alive = True
+class SpaceshipBullet(Bullet):
+    WIDTH = 9
+    HEIGHT = 32
+    SPEED = 20
 
-    def update(self, object):
-        if self.rect.y >= SCREEN_HEIGHT:
-            self.is_alive = False
-        if self.rect.colliderect(object.rect):
-            object.is_alive = False
-            self.is_alive = False
 
-    def draw(self, screen):
-        screen.blit(self.image, self.rect)
+    def __init__(self, center):
+        self.image = BULLET
+        self.image = pygame.transform.scale(self.image, (self.WIDTH, self.HEIGHT))
+        super().__init__(self.image, center)
+
+    def update(self, enemy):
+        self.rect.y -= self.SPEED
+        super().update(enemy) 
