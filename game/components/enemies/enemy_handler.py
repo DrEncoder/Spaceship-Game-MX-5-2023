@@ -1,6 +1,7 @@
 from game.components.enemies.ship import Ship
-from game.components.enemies.diagonal_enemy_right import EnemyThree
-from game.components.enemies.diagonal_enemyl_left import EnemyTwo
+from game.components.enemies.go_all_over import GoAllOver
+from game.components.enemies.burguer import Burguer
+from game.components.enemies.ovni import Ovni
 
 class EnemyHandler():
     def __init__(self):  
@@ -23,8 +24,9 @@ class EnemyHandler():
     def add_enemy(self):
         if len(self.enemies) < 3:
            self.enemies.append(Ship())
-           self.enemies.append(EnemyTwo())
-           self.enemies.append(EnemyThree())
+           self.enemies.append(GoAllOver())
+           self.enemies.append(Burguer())
+           self.enemies.append(Ovni())
 
     def remove_enemy(self, enemy):
         self.enemies.remove(enemy)

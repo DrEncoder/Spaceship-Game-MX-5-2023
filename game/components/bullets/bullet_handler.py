@@ -1,7 +1,9 @@
 from game.utils.constants import BULLET_ENEMY_TYPE
 from game.utils.constants import BULLET_PLAYER_TYPE
+from game.utils.constants import BULLET_BURGUER_TYPE
 from game.components.bullets.bullet_enemy import BulletEnemy
 from game.components.bullets.spaceship_bullet import SpaceshipBullet
+from game.components.bullets.burguer_bullet import BurguerBullet
 
 class BulletHandler:
     def __init__(self):
@@ -10,6 +12,8 @@ class BulletHandler:
     def update(self, player, enemies):
         for bullet in self.bullets:
             if type(bullet) is BulletEnemy: 
+                bullet.update(player)
+            if type(bullet) is BurguerBullet: 
                 bullet.update(player)
             elif type(bullet) is SpaceshipBullet:
                 for enemy in enemies:
@@ -28,6 +32,9 @@ class BulletHandler:
 
         elif type == BULLET_PLAYER_TYPE:
            self.bullets.append(SpaceshipBullet(center))
+
+        elif type == BULLET_BURGUER_TYPE:
+           self.bullets.append(BurguerBullet(center))
 
     def remove_bullet(self, bullet):
         self.bullets.remove(bullet)

@@ -1,9 +1,10 @@
 import pygame
 
-from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, WHITE_COLOR, RED_COLOR
+from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, WHITE_COLOR, RED_COLOR, LOGO
 from game.components.spaceship import Spaceship
 from game.components.enemies.enemy_handler import EnemyHandler
 from game.components.bullets.bullet_handler import BulletHandler
+from game.components.asteroids.asteroid_handler import AsteroidHandler
 from game.utils import text_utils
 
 
@@ -22,6 +23,7 @@ class Game:
         self.player = Spaceship()
         self.enemy_handler = EnemyHandler()
         self.bullet_handler = BulletHandler()
+        self.asteorid_handler = AsteroidHandler()
         self.number_death = 0
         self.score = 0
         self.game_over = False
@@ -71,6 +73,7 @@ class Game:
             self.player.update(user_input, self.bullet_handler)
             self.enemy_handler.update(self.bullet_handler)
             self.bullet_handler.update(self.player, self.enemy_handler.enemies)
+            self.asteorid_handler.update()
             self.score = self.enemy_handler.number_enemies_destroyed
             if not self.player.is_alive:
                 pygame.time.delay(500)
@@ -87,6 +90,7 @@ class Game:
             self.player.draw(self.screen)
             self.enemy_handler.draw(self.screen)
             self.bullet_handler.draw(self.screen)
+            self.asteorid_handler.draw(self.screen)
             self.draw_score()
         else:
             self.draw_menu()
@@ -103,17 +107,27 @@ class Game:
             self.y_pos_bg = 0
         self.y_pos_bg += self.game_speed
 
+    
+    WIDTH=350
+    HEIGHT=350
+
     def draw_menu(self):
         menu_options = ['Start Game', 'High Scores', 'Exit']
         menu_color = [WHITE_COLOR] * 3
         menu_color[self.menu_selection] = RED_COLOR
 
+        menu_image = LOGO
+        menu_image = pygame.transform.scale(menu_image, (self.WIDTH, self.HEIGHT))
+        menu_image_rect = menu_image.get_rect()
+        menu_image_rect.center = (550, 150)
+        self.screen.blit(menu_image, menu_image_rect)
+
         for index, option in enumerate(menu_options):
-            text, text_rect = text_utils.get_message(option, 30, menu_color[index], height=SCREEN_HEIGHT // 2 - 100 + index * 40)
+            text, text_rect = text_utils.get_message(option, 30, menu_color[index], height=SCREEN_HEIGHT // 1.3 - 100 + index * 40)
             self.screen.blit(text, text_rect)
 
         if self.game_over:
-            score_text, score_rect = text_utils.get_message(f'Your score was: {self.score}', 20, WHITE_COLOR, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 150)
+            score_text, score_rect = text_utils.get_message(f'Your score was: {self.score}', 20, RED_COLOR, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 200)
             self.screen.blit(score_text, score_rect)
 
            
@@ -125,3 +139,4 @@ class Game:
         self.player.reset()
         self.enemy_handler.reset()
         self.bullet_handler.reset()
+        self.asteorid_handler.reset()

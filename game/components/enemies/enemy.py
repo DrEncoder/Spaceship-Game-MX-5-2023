@@ -4,12 +4,12 @@ from game.utils.constants import SCREEN_WIDTH, SCREEN_HEIGHT, LEFT, RIGHT, BULLE
 
 class Enemy():
     X_POS_LIST = [50, 150, 250, 350, 450, 550, 650, 750, 850, 950]
-    Y_POS = 0
+    Y_POS = -50
     SPEED_X = 5  
     SPEED_Y = 2
     MOV_X = [LEFT, RIGHT]
     INTERVAL = 100
-    SHOOTING_TIME = 30
+    SHOOTING_TIME = 60
     
 
     def __init__(self, image):
