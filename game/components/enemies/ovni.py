@@ -4,7 +4,7 @@ from game.components.enemies.enemy import Enemy
 from game.utils.constants import OVNI, SCREEN_HEIGHT, SCREEN_WIDTH, BULLET_ENEMY_TYPE
 
 class Ovni(Enemy):
-    WIDTH = 40
+    WIDTH = 60
     HEIGHT = 60
     SPEED = 20
     SHOOTING_TIME = 600

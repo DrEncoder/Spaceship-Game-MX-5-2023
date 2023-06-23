@@ -4,9 +4,9 @@ from  game.utils.constants import BURGUER, BULLET_BURGUER_TYPE
 
 class Burguer(Enemy):
     WIDTH = 60
-    HEIGHT = 80
-    SPEED_Y = 5
-    SHOOTING_TIME = 40
+    HEIGHT = 60
+    SPEED_Y = 40
+    SHOOTING_TIME = 15
 
     def __init__(self):
         self.image = BURGUER

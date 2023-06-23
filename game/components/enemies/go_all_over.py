@@ -6,8 +6,8 @@ from  game.utils.constants import ENEMY_2, SCREEN_HEIGHT, SCREEN_WIDTH, BULLET_E
 class GoAllOver(Enemy):
     WIDTH = 40
     HEIGHT = 60
-    SPEED = 7
-    SHOOTING_TIME = 60
+    SPEED = 25
+    SHOOTING_TIME = 40
 
     def __init__(self):
         self.image = ENEMY_2

@@ -1,5 +1,6 @@
 import pygame
-from game.utils.constants import SPACESHIP, SCREEN_WIDTH, SCREEN_HEIGHT, BULLET_PLAYER_TYPE
+from game.utils.constants import SPACESHIP, SPACESHIP_SHIELD, SCREEN_WIDTH, SCREEN_HEIGHT, BULLET_PLAYER_TYPE
+from game.components.power_ups.shield import Shield
 
 class Spaceship:
      WIDTH = 40
@@ -14,6 +15,8 @@ class Spaceship:
         self.rect.x = self.X_POS
         self.rect.y = self.Y_POS
         self.is_alive = True
+        self.has_shield = False
+        self.time_up = 0
 
      def update(self, user_input, bullet_handler):
         if user_input[pygame.K_SPACE]:
@@ -30,6 +33,11 @@ class Spaceship:
 
         elif user_input[pygame.K_DOWN]:
             self.move_down()
+
+        if self.has_shield:
+            time_to_show = round((self.time_up - pygame.time.get_ticks())/1000, 2)
+            if time_to_show < 0:
+                self.deactivate_power_up()
          
 
      
@@ -56,6 +64,18 @@ class Spaceship:
      def shoot(self, bullet_handler):
          bullet_handler.add_bullet(BULLET_PLAYER_TYPE, self.rect.center)
 
+     def activate_power_up(self, power_up):
+         self.time_up = power_up.time_up
+         if type(power_up) == Shield:
+             self.has_shield = True
+             self.image = SPACESHIP_SHIELD
+             self.image = pygame.transform.scale(self.image, (self.WIDTH, self.HEIGHT + 2))
+
+     def deactivate_power_up(self):
+         self.has_shield = False
+         self.image = SPACESHIP
+         self.image = pygame.transform.scale(self.image, (self.WIDTH, self.HEIGHT))
+             
      def reset(self):
          self.rect.x = self.X_POS
          self.rect.y = self.Y_POS

@@ -4,8 +4,8 @@ from game.utils.constants import BURGUER_BULLET
 
 
 class BurguerBullet(Bullet):
-    WIDTH = 9
-    HEIGHT = 32
+    WIDTH = 15
+    HEIGHT = 40
     SPEED = 20
 
 
@@ -15,5 +15,5 @@ class BurguerBullet(Bullet):
         super().__init__(self.image, center)
 
     def update(self, player):
-        self.rect.y += self.SPEED
+        self.rect.y -= self.SPEED
         super().update(player)
