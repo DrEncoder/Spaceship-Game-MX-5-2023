@@ -25,7 +25,6 @@ class PowerUpHandler:
             power_up.draw(screen)
 
     def add_power_up(self):
-        if len(self.power_ups):
             self.power_ups.append(Shield()) 
         
     def remove_power_up(self, power_up):

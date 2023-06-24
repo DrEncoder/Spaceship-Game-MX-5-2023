@@ -1,6 +1,5 @@
 import pygame
-import os
-import csv
+import json
 
 from game.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, WHITE_COLOR, RED_COLOR, LOGO
 from game.components.spaceship import Spaceship
@@ -13,7 +12,6 @@ from game.utils import text_utils
 
 class Game:
 
-    STATS_FILE = 'statistics.csv'
 
     def __init__(self):
         pygame.init()
@@ -36,6 +34,7 @@ class Game:
         self.game_over = False
         self.menu_selection = 0
         self.statistics = self.load_statistics()
+        self.final_boss = None
         
 
     def run(self):
@@ -49,6 +48,7 @@ class Game:
         pygame.quit()
 
     def events(self):
+        menu_options = ['Start Game', 'Statistics', 'Exit']
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
@@ -61,20 +61,18 @@ class Game:
                     if event.key == pygame.K_UP:
                         self.menu_selection -= 1
                         if self.menu_selection < 0:
-                            self.menu_selection = 2
+                            self.menu_selection = len(menu_options) - 1
                     elif event.key == pygame.K_DOWN:
                         self.menu_selection += 1
-                        if self.menu_selection > 2:
+                        if self.menu_selection >= len(menu_options):
                             self.menu_selection = 0
                     elif event.key == pygame.K_RETURN:
                         if self.menu_selection == 0:
                             self.playing = True
                             self.reset()
                         elif self.menu_selection == 1:
-                            self.show_high_scores()
-                        elif self.menu_selection == 2:
                             self.show_statistics()
-                        elif self.menu_selection == 3:
+                        elif self.menu_selection == 2:
                             self.running = False
 
     def update(self):
@@ -86,6 +84,9 @@ class Game:
             self.asteorid_handler.update()
             self.power_up_handler.update(self.player)
             self.score = self.enemy_handler.number_enemies_destroyed
+
+            if self.final_boss is not None:
+                self.final_boss.update(self.bullet_handler)
             if not self.player.is_alive:
                 pygame.time.delay(500)
                 self.playing = False
@@ -125,8 +126,8 @@ class Game:
     HEIGHT=350
 
     def draw_menu(self):
-        menu_options = ['Start Game', 'High Scores', 'Statistics', 'Exit']
-        menu_color = [WHITE_COLOR] * 4
+        menu_options = ['Start Game', 'Statistics', 'Exit']
+        menu_color = [WHITE_COLOR] * len(menu_options)
         menu_color[self.menu_selection] = RED_COLOR
 
         menu_image = LOGO
@@ -143,48 +144,41 @@ class Game:
             score_text, score_rect = text_utils.get_message(f'Your score was: {self.score}', 20, RED_COLOR, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 250)
             self.screen.blit(score_text, score_rect)
 
-        if self.menu_selection == 2:
+        if self.menu_selection == 1:
             self.show_statistics()
-
            
     def draw_score(self):
         score, score_rect = text_utils.get_message(f'Your score is: {self.score}', 20, WHITE_COLOR, 1000, 40)
         self.screen.blit(score, score_rect)
 
     def save_statistics(self):
-        with open(Game.STATS_FILE, 'w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow(['Number of Deaths', 'Total Ships Destroyed'])
-            writer.writerow([self.number_death, self.enemy_handler.number_enemies_destroyed])
+        statistics = {
+            'number_death': self.number_death,
+            'score': self.score
+        }
+        with open('statistics.json', 'w') as file:
+            json.dump(statistics, file)
 
     def load_statistics(self):
-        if not os.path.isfile(Game.STATS_FILE):
-            return {'Number of Deaths': 0, 'Total Ships Destroyed': 0}
-
-        with open(Game.STATS_FILE, 'r') as file:
-            reader = csv.reader(file)
-            next(reader)
-            try:
-                row = next(reader)
-                return {'Number of Deaths': int(row[0]), 'Total Ships Destroyed': int(row[1])}
-            except (csv.Error, IndexError):
-                return {'Number of Deaths': 0, 'Total Ships Destroyed': 0}
+        try:
+            with open('statistics.json', 'r') as file:
+                statistics = json.load(file)
+                self.number_death = statistics.get('number_death', 0)
+                self.score = statistics.get('score', 0)
+        except FileNotFoundError:
+            self.number_death = 0
+            self.score = 0
 
     def show_statistics(self):
-        statistics = {
-            'Number of Deaths': self.number_death,
-            'Total Ships Destroyed': self.enemy_handler.number_enemies_destroyed
-        }
+        statistics_text = f'Number of deaths: {self.number_death}\nScore: {self.score}'
+        statistics_surface, statistics_rect = text_utils.get_message(statistics_text, 30, WHITE_COLOR, height=SCREEN_HEIGHT // 2)
+        self.screen.blit(statistics_surface, statistics_rect)
 
-        self.statistics.update(statistics)
-        self.save_statistics()
+    def show_high_scores(self):
+        pass
 
-        stat_text = ""
-        for stat_name, stat_value in self.statistics.items():
-            stat_text += f'{stat_name}: {stat_value}\n'
-
-        stat_message, stat_rect = text_utils.get_message(stat_text, 20, WHITE_COLOR, SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
-        self.screen.blit(stat_message, stat_rect)
+    def load_high_scores(self):
+        pass
 
     def reset(self):
         self.player.reset()
@@ -192,3 +186,4 @@ class Game:
         self.bullet_handler.reset()
         self.asteorid_handler.reset()
         self.power_up_handler.reset()
+        self.final_boss = None

@@ -26,10 +26,12 @@ BULLET = pygame.image.load(os.path.join(IMG_DIR, "Bullet/bullet_1.png"))
 
 BULLET_ENEMY = pygame.image.load(os.path.join(IMG_DIR, "Bullet/bullet_2.png"))
 BURGUER_BULLET = pygame.image.load(os.path.join(IMG_DIR, "Bullet/bullet_4.png"))
+BULLET_FINAL_BOSS = pygame.image.load(os.path.join(IMG_DIR, "Bullet/bullet_5.png"))
 ENEMY_1 = pygame.image.load(os.path.join(IMG_DIR, "Enemy/enemy_1.png"))
 ENEMY_2 = pygame.image.load(os.path.join(IMG_DIR, "Enemy/enemy_2.png"))
 BURGUER = pygame.image.load(os.path.join(IMG_DIR, "Enemy/burguer.png"))
 OVNI = pygame.image.load(os.path.join(IMG_DIR, "Enemy/ovni.png"))
+FINAL_BOSS = pygame.image.load(os.path.join(IMG_DIR, "Enemy/final_boss.png"))
 
 ASTEROID = pygame.image.load(os.path.join(IMG_DIR, "Asteroid/asteroid.png"))
 
@@ -40,6 +42,7 @@ FONT_STYLE = 'freesansbold.ttf'
 BULLET_ENEMY_TYPE = 'enemy'
 BULLET_PLAYER_TYPE = 'player'
 BULLET_BURGUER_TYPE = 'burguer'
+BULLET_FINAL_BOSS_TYPE = 'boss'
 
 LEFT = 'left'
 RIGHT = 'right'
