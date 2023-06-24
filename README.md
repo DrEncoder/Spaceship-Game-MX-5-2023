@@ -25,7 +25,7 @@
 
 <p>Una vez que el juego esté en ejecución, verás un menú con tres opciones: "Start Game" (Iniciar juego), "Statistics" (Estadísticas) y "Exit" (Salir). Puedes navegar por el menú usando las teclas de flecha (arriba y abajo) y seleccionar una opción presionando la tecla Enter.</p>
 
-<p>Si seleccionas "Start Game", el juego comenzará y podrás controlar la nave espacial usando las teclas de flecha. Presiona la barra espaciadora para disparar balas y destruir enemigos y asteroides. El objetivo es sobrevivir el mayor tiempo posible y obtener una puntuación alta.</p>
+<p>Si seleccionas "Start Game", el juego comenzará y podrás controlar la nave espacial usando las teclas de flecha. Presiona la barra espaciadora para disparar balas y destruir enemigos. El objetivo es sobrevivir el mayor tiempo posible y obtener una puntuación alta.</p>
 
 <p>Durante el juego, tu puntuación actual se mostrará en la parte superior de la pantalla. Si tu nave espacial es destruida, el juego terminará y tu puntuación se mostrará en la pantalla de fin de juego. El juego también llevará un registro del número de veces que hayas muerto.</p>
 
